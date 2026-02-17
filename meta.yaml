@@ -1,6 +1,6 @@
 package:
-  name: syntenytracker2
-  version: "2.0.0"
+  name: eba3
+  version: "3.0.0"
 
 source:
   path: .
@@ -8,7 +8,6 @@ source:
 build:
   number: 0
   noarch: generic
-
 
 requirements:
   build:
@@ -20,19 +19,19 @@ requirements:
 
 test:
   commands:
-    - run_synteny.pl --help
-    - syntenytracker2 --help
+    - EBA.pl -h
 
 about:
-  home: https://github.com/pranjalpruthi/synteny-tracker-2
-  license: Non-Commercial
-  summary: "Modernized Modular Synteny Pipeline v2.0"
+  home: https://bioinformaticsonline.com
+  license: Academic-Use-Only
+  summary: "Evolutionary Breakpoints Analyser (EBA) Tool"
   description: |
-    SyntenyTracker v2.0 is a comprehensive bioinformatics tool designed for 
-    comparative genomics, enabling users to identify and visualize syntenic 
-    regions between genomes.
+    Evolutionary Breakpoints Analyser (EBA) is a comprehensive bioinformatics 
+    tool designed for precise detection of chromosomal breakpoint regions in 
+    assembled chromosome or genome sequences. It identifies and classifies 
+    genomic rearrangement breakpoints and assigns them to phylogenetic nodes.
   doc_url: https://bioinformaticsonline.com
-  dev_url: https://github.com/pranjalpruthi/synteny-tracker-2
+  dev_url: https://github.com/pranjalpruthi/eba3
 
 extra:
   recipe-maintainers:

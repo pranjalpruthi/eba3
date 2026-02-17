@@ -1,19 +1,21 @@
 #!/usr/bin/env perl
 #BEGIN { $^W = 1 }
 
-# $Id: EBA.pl 01 2015-06-15 23:25:00Z Jitendra $
+# $Id: EBA.pl 01 2026-02-18 23:25:00Z Pranjal $
 
 ##---------------------------------------------------------------------------##
 ##  File: EBA.pl
 ##
 ##  Author:
 ##        Jitendra <jnarayan81@gmail.com>, Denis <dmlarkin@gmail.com>
+##  Maintainer:
+##        Pranjal <mail@pranjal.work>
 ##
-##  Description:
+##  Description: Evolutionary Breakpoints Analyser (EBA)
 ##
 #******************************************************************************
-#* Copyright (C) 2015 Jitendra Narayan <jnarayan81@gmail.com>
-#* This work is distributed under the license of Perl itself.
+#* Copyright (C) 2015-2026 Jitendra Lab / IGIB
+#* This work is distributed under the Academic Use Only License.
 ###############################################################################
 
 ##---------------------------------------------------------------------------##
@@ -89,13 +91,14 @@ print <<'WELCOME';
 	 |  _|   | |_) |  / _ \   	
 	 | |___  | |_) / / ___ \  
 	 |_____| |____/ /_/   \ \  
-	 EBA v3.0 [Sept 13, 2016]  - [+]
+	 EBA3 v3.0 [2026]
+	 Evolutionary Breakpoints Analyser (EBA)
 
 Citation - automated definition and classification of Evolutionary Breakpoints Regions
-Paper URL
+Research URL: https://bioinformaticsonline.com
 
-License: Creative Commons Licence
-Bug-reports and requests to: jnarayanATgmail.com and dmlarkinATgmail.com
+License: Academic Use Only
+Bug-reports and requests to: jnlab.igib@gmail.com / mail@pranjal.work
 WELCOME
 
 EBALib::CommonSubs::returnOS($VERSION);

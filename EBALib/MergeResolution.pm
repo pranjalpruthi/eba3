@@ -1,7 +1,8 @@
 
 # $Id$ Merge Resolutions
 # Perl module for EBA EBALib::MergeResolution;
-# Author: Jitendra Narayan <jnarayan81@gmail.com>
+# Author: Jitendra Narayan <jnlab.igib@gmail.com>, Denis Larkin <dmlarkin@gmail.com>
+# Maintainer: Pranjal Pruthi <mail@pranjal.work>
 # Copyright (c) 2015 by Jitendra. All rights reserved.
 # You may distribute this module under the same terms as Perl itself
 
@@ -25,7 +26,9 @@ Describe the object here
 
 =head1 CONTACT
 
-Jitendra <jnarayan81@gmail.com>
+Jitendra Narayan <jnlab.igib@gmail.com>
+Denis Larkin <dmlarkin@gmail.com>
+Pranjal Pruthi <mail@pranjal.work>
 
 =head1 APPENDIX
 

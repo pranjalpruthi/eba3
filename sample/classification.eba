@@ -1,0 +1,5 @@
+lineage=
+Adineta_vaga=Adineta_ricciae,Rotaria_rotatoria,Habrotrocha_rosa,Philodina_roseola,Caenorhabditis_elegans
+nod1=Rotaria_rotatoria,Habrotrocha_rosa,Philodina_roseola,Adineta_ricciae
+nod2=Rotaria_rotatoria,Habrotrocha_rosa,Philodina_roseola
+nod3=Habrotrocha_rosa,Philodina_roseola

@@ -1,6 +1,7 @@
 # $Id$ All messages
 # Perl module for EBA EBALib::Messages;
-# Author: Jitendra Narayan <jnarayan81@gmail.com>
+# Author: Jitendra Narayan <jnlab.igib@gmail.com>, Denis Larkin <dmlarkin@gmail.com>
+# Maintainer: Pranjal Pruthi <mail@pranjal.work>
 # Copyright (c) 2015 by Jitendra. All rights reserved.
 # You may distribute this module under the same terms as Perl itself
 
@@ -24,7 +25,9 @@ Describe the object here
 
 =head1 CONTACT
 
-Jitendra <jnarayan81@gmail.com>
+Jitendra Narayan <jnlab.igib@gmail.com>
+Denis Larkin <dmlarkin@gmail.com>
+Pranjal Pruthi <mail@pranjal.work>
 
 =head1 APPENDIX
 
@@ -430,22 +433,18 @@ Aim of the tool:
   Automated definition and classification of evolutionary breakpoints regions from a large number of aligned genomes using species phylogenetic relationships.
 
 Developers: 
-  Jitendra Narayan <jin1_at_aber.ac.uk>,  
-  Denis Larkin <dmlarkin_at_gmail.com> 
+  Jitendra Narayan <jnlab.igib@gmail.com>,  
+  Denis Larkin <dmlarkin@gmail.com> 
+
+Maintainer/Dev:
+  Pranjal Pruthi <mail@pranjal.work>
 
 Address:
-  Institute of Biological, Environmental & Rural Sciences
-  Aberystwyth University 
-  Penglais Campus
-  Aberystwyth 
-  Ceredigion 
-  SY23 3DA 
-
-  Tel: +44 (0)1970 628505
-  Fax: +44 (0)1970 622350
+  Jitendra Lab, CSIR-IGIB, Delhi, India
+  Research URL: https://bioinformaticsonline.com
 
 Version:
-  Last updated on 31-01-13 Version: $VERSION
+  Last updated on 18-02-26 Version: $VERSION
 
 Term:
   This EBA package $VERSION is free software; you can redistribute it and or modify
