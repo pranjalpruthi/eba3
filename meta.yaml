@@ -1,0 +1,40 @@
+package:
+  name: syntenytracker2
+  version: "2.0.0"
+
+source:
+  path: .
+
+build:
+  number: 0
+  noarch: generic
+
+
+requirements:
+  build:
+    - make
+  host:
+    - perl >=5.32.1
+  run:
+    - perl >=5.32.1
+
+test:
+  commands:
+    - run_synteny.pl --help
+    - syntenytracker2 --help
+
+about:
+  home: https://github.com/pranjalpruthi/synteny-tracker-2
+  license: Non-Commercial
+  summary: "Modernized Modular Synteny Pipeline v2.0"
+  description: |
+    SyntenyTracker v2.0 is a comprehensive bioinformatics tool designed for 
+    comparative genomics, enabling users to identify and visualize syntenic 
+    regions between genomes.
+  doc_url: https://bioinformaticsonline.com
+  dev_url: https://github.com/pranjalpruthi/synteny-tracker-2
+
+extra:
+  recipe-maintainers:
+    - pranjalpruthi
+    - jitendralab
