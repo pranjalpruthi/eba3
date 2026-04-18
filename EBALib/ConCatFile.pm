@@ -55,7 +55,7 @@ my $path=shift;
 my $dir="$path/EBA_OutFiles";
 my @species;
 open OUTFILE, ">", "$path/EBA_OutFiles/all_brk.eba0" or die $!; 
-open OUTFILE2, ">", "sps.txt" or die $!;
+open OUTFILE2, ">", EBALib::CommonSubs::outpath("sps.txt") or die $!;
 
 opendir(DIR, $dir) or die $!;
    	while (my $file = readdir(DIR)) {

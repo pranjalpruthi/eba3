@@ -323,7 +323,7 @@ undef @ref_org; undef @chr_ref; undef @brk_cor1; undef @brk_cor2; undef @tar_org
 sub findChrSize {
 my $chr=shift;
 my %hash;
-open(CHRFILE, "chr_size.txt") || warn EBALib::Messages::noChrOp();
+open(CHRFILE, $EBALib::CommonSubs::CONFIG{chrfile}) || warn EBALib::Messages::noChrOp();
 while (<CHRFILE>) { chomp; $_=EBALib::CommonSubs::trim($_); my ($key, $val) = split /\t/, lc($_); $hash{$key} = $val;} ### We can read and store it ... !!!!
 close CHRFILE or die EBALib::Messages::noChrCl();
 #foreach my $key ( sort {$a <=> $b} keys %hash){ push (@arrayChr, $key); } ## Store the chromosome data

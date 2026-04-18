@@ -81,7 +81,7 @@ use strict;
 #use warnings;
 use Math::Round;
 
-open(BETAFILE, 'betaScore') || (warn EBALib::Messages::failOp("betafile"));
+open(BETAFILE, EBALib::CommonSubs::outpath('betaScore')) || (warn EBALib::Messages::failOp("betafile"));
 my %betahash;
 while (<BETAFILE>) { chomp;  my($key,$val) = split /\t/, lc($_); $_=EBALib::CommonSubs::trim($_); $key =~ s/^\s*(.*)\s*$/$1/; $val =~ s/^\s*(.*)\s*$/$1/; $betahash{$key} = $val; }
 close BETAFILE or die EBALib::Messages::failCl("betafile");
@@ -109,7 +109,7 @@ while (<INFILE>) {
 	@all_species= keys %headhash; print OUTFILE "$line\n"; next;	
    }  ## So the header name should must be there, otherwise it will not able to find the species index.
    
-   		open(CLASSFILE, "classification.eba") || (warn EBALib::Messages::failOp("classification.eba"));		
+   		open(CLASSFILE, $EBALib::CommonSubs::CONFIG{classfile}) || (warn EBALib::Messages::failOp("classification.eba"));		
 		while (<CLASSFILE>) {
    			chomp; my @all_sps_brk_cor;  my $Pvalue;  my @val2;  my @all_beta_score;   my $beta_score;  my @new_tmp_final; my $flag="OFF";
 			if (index($_,"#") == 0) { next; } # Lines starting with a hash mark are comments
@@ -209,7 +209,7 @@ while (<INFILE>) {
   print OUTFILE "$line\t";
   my $count; my $first_val; my $second_val; my $ratio;
   print OUTFILE "@fscore\t";
-	foreach my $value (sort {$brkhash{$b} <=> $brkhash{$a} } keys %brkhash) {    
+	foreach my $value (sort { $brkhash{$b} <=> $brkhash{$a} || $a cmp $b } keys %brkhash) {   
            	$count++;
        		if ($count == 1) { print OUTFILE "$value:$brkhash{$value}\t"; $first_val=$brkhash{$value};}
        		if ($count == 2) { print OUTFILE "$value:$brkhash{$value}\t"; $second_val=$brkhash{$value};}
@@ -358,7 +358,7 @@ my @thefiles;  my @array_2d;   my @all_size;  my @sizes;  my @all_border; my @bo
 my $sizes_brk; my @sizes_brk;  my %hist_val;  my @hist_freq;  my @all_name; my $aa=0; my $chr; my $last_size; my @break_rates;
 
 my @chr;
-open(CHRFILE1, "chr_size.txt") || warn EBALib::Messages::failOp("chr_size");
+open(CHRFILE1, $EBALib::CommonSubs::CONFIG{chrfile}) || warn EBALib::Messages::failOp("chr_size");
 while (<CHRFILE1>) { chomp; $_=EBALib::CommonSubs::trim($_); next if $_ =~ /^\s*#/; my @chrtmp = split /\t/, lc($_); push @chr,$chrtmp[0];}       ## We need to improve it !!!!!!!!!1
 close CHRFILE1 or die EBALib::Messages::failCl("file");
 for (@chr) { s/^\s+//; s/\s+$//;} # replace spaces
@@ -428,7 +428,7 @@ sub fun_br_rates_chromo {
    my $values;  my @subArray;   my $number=0;  my @break_rates;   my $chr_size; my $jj=1;
 
 my %hash; my @allChromo;
-open(CHRFILE2, "chr_size.txt") || warn EBALib::Messages::failOp("chr_size");
+open(CHRFILE2, $EBALib::CommonSubs::CONFIG{chrfile}) || warn EBALib::Messages::failOp("chr_size");
 while (<CHRFILE2>) { chomp; $_=EBALib::CommonSubs::trim($_); next if $_ =~ /^\s*#/; my ($key, $val) = split /\t/, lc($_); $hash{$key} = $val; push @allChromo, $key;}         ### We can read and store it ... !!!!
 close CHRFILE2 or die EBALib::Messages::failCl("file");
 

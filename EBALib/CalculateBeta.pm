@@ -61,11 +61,13 @@ my ($dir, $increase, $num)=@_;
 
 #print "Calculating Beta scores.. .\t\n";
 
-if (-e "beta.tmp") { EBALib::Messages::betaHai();  unlink ("beta.tmp"); EBALib::Messages::betaDel();}   ## I check the directory and if the file already exist delete them .. becuase i am appending in file
-if (-e "betaScore") { EBALib::Messages::betaScoreHai();  unlink ("betaScore"); EBALib::Messages::betaScoreDel();}   ## I check the directory and if the file already exist delete them .. becuase i am appending in file
+my $beta_tmp_path = EBALib::CommonSubs::outpath("beta.tmp");
+my $beta_score_path = EBALib::CommonSubs::outpath("betaScore");
+if (-e $beta_tmp_path) { EBALib::Messages::betaHai();  unlink ($beta_tmp_path); EBALib::Messages::betaDel();}   ## I check the directory and if the file already exist delete them .. becuase i am appending in file
+if (-e $beta_score_path) { EBALib::Messages::betaScoreHai();  unlink ($beta_score_path); EBALib::Messages::betaScoreDel();}   ## I check the directory and if the file already exist delete them .. becuase i am appending in file
 
 my @SpsArray;
-open SPSFILE, "sps.txt" or die $!;
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 while (<SPSFILE>) { my $SpsLine=$_; chomp $SpsLine; @SpsArray=split /,/, lc($SpsLine);  my $SpsNumber = scalar (@SpsArray); } ## It read the spacies names from sps.txt file ... need to improve !!!
 close SPSFILE or die EBALib::Messages::failCl("sps.txt");
 
@@ -97,8 +99,8 @@ if (scalar(@allResolutions) <=2 ) { EBALib::Messages::noBeta();}
 
 ###--- Calculate the breakpoint statics graph. -------
 
-EBALib::Draw::drawBreakpointGraph::breakpointGraph ("beta.tmp", \@SpsArray, \@allResolutions, $num);
-#EBALib::Draw::drawChrBreakpointGraph::breakpointChrGraph("beta.tmp", \@SpsArray, \@allResolutions);
+EBALib::Draw::drawBreakpointGraph::breakpointGraph (EBALib::CommonSubs::outpath("beta.tmp"), \@SpsArray, \@allResolutions, $num);
+#EBALib::Draw::drawChrBreakpointGraph::breakpointChrGraph(EBALib::CommonSubs::outpath("beta.tmp"), \@SpsArray, \@allResolutions);
 
 ##----------------------------------------------------
 
@@ -127,7 +129,7 @@ undef @allResolutions;
 
 ##----------------------------------------------
 
-unlink ("beta.tmp"); ## delete at the end  
+unlink (EBALib::CommonSubs::outpath("beta.tmp")); ## delete at the end
 closedir($par_dir);
 }
 
@@ -139,8 +141,8 @@ my @spsArray=@$spsArray_ref;
 my (%allMinResHash, %allMidResHash, %allMaxResHash);
 # print "$minRes, $midRes, $maxRes\n";
 	foreach my $speciesName(@spsArray) {    # print "$speciesName\n";
-	open INFILE,  'beta.tmp' or die EBALib::Messages::failOp('beta.tmp');
-	open OUTFILE, ">>", 'betaScore' or die EBALib::Messages::failOp('betaScore');
+	open INFILE,  EBALib::CommonSubs::outpath('beta.tmp') or die EBALib::Messages::failOp('beta.tmp');
+	open OUTFILE, ">>", EBALib::CommonSubs::outpath('betaScore') or die EBALib::Messages::failOp('betaScore');
 	while (<INFILE>) {
 		chomp;    
 		my $line= $_;  #print "$line\n";
@@ -189,8 +191,8 @@ my @spsArray=@$spsArray_ref;
 my (%allMinResHash, %allMidResHash, %allMaxResHash);
 
 	foreach my $speciesName(@spsArray) {    # print "$speciesName\n";
-	open INFILE,  'beta.tmp' or die EBALib::Messages::failOp('beta.tmp');
-	open OUTFILE, ">>", 'betaScore' or die EBALib::Messages::failOp('betaScore');
+	open INFILE,  EBALib::CommonSubs::outpath('beta.tmp') or die EBALib::Messages::failOp('beta.tmp');
+	open OUTFILE, ">>", EBALib::CommonSubs::outpath('betaScore') or die EBALib::Messages::failOp('betaScore');
 	while (<INFILE>) {
 		chomp;    
 		my $line= EBALib::CommonSubs::trim($_);  #print "$line\n";
@@ -364,7 +366,7 @@ if(!$increase) { $increase=0;} ## The default values for increament is 0;
 				if ($new_file[0] ne "") { 
 			        	# print "$file\n";
 					my $in="$dir/$file";
-					my $out="beta.tmp";
+					my $out=EBALib::CommonSubs::outpath("beta.tmp");
 					#my $increase=0; ## It it the values accepted when user enter any option to increase
 					findBreaks($dir,$in,$out,$increase);
 				}

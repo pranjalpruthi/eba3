@@ -58,7 +58,7 @@ my $fileName="$path/EBA_OutFiles/final_classify_reuse.eba8";
 my $ImgFile= "$path/EBA_ImageFiles/EBR_density_chromosome_sizes_$resName.gif";
 my $file2= "$path/EBA_ImageFiles/EBR_density_chromosome_sizes_$resName.data";
 
-my $InFile='sps.txt'; my $InFile2='classification.eba';
+my $InFile=EBALib::CommonSubs::outpath('sps.txt'); my $InFile2=$EBALib::CommonSubs::CONFIG{classfile};
 my (@spsArr);
 
 open INFILE,  $InFile or die "$0: open $InFile: $!";
@@ -83,7 +83,7 @@ close INFILE2 or die "Could not close $InFile2 file: $!\n";
 my (@allBreaks, $countBreakNumber, @finalData, @all, @catColor, @arrayChr, @names);
 
 my %hash;
-open(CHRFILE, "chr_size.txt") || warn "Can't open chromosome file\n";
+open(CHRFILE, $EBALib::CommonSubs::CONFIG{chrfile}) || warn "Can't open chromosome file\n";
 while (<CHRFILE>) { chomp; my ($key, $val) = split /\t/, lc($_); $hash{$key} = $val;} ### We can read and store it ... !!!!
 close CHRFILE or die "could not close file: $!\n";
 foreach my $key ( sort {$a <=> $b} keys %hash){ push (@arrayChr, $key); } ## Store the chromosome data

@@ -240,7 +240,7 @@ my ($array2d_ref, $file2)=@_;
 my @array2d=@$array2d_ref;
 
 open OUTFILE, ">" , $file2 or die "$0: open $file2: $!";
-open OUTFILE2, ">>" , "allCumData.tmp" or die "$0: open allCumData: $!";
+open OUTFILE2, ">>" , EBALib::CommonSubs::outpath("allCumData.tmp") or die "$0: open allCumData: $!";
 
 #print "Print Using ForEach\n";
 foreach my $row(@array2d){

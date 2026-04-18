@@ -53,7 +53,7 @@ sub verifyClassification {
     open my $fh, '<', $fileIn or die EBALib::Messages::failOp($fileIn);
 	
     my @spstmp;
-    open(SPSFILE, "sps.txt") || warn EBALib::Messages::failOp("file");
+    open(SPSFILE, EBALib::CommonSubs::outpath("sps.txt")) || warn EBALib::Messages::failOp("file");
     while (<SPSFILE>) { chomp; next if $_ =~ /^\s*#/; @spstmp = split /\,/, lc($_);}
     close SPSFILE or die EBALib::Messages::failCl("file");
 

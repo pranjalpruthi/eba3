@@ -46,19 +46,21 @@ use warnings;
 #use Term::ANSIColor;
 use Exporter;
 
-our @EXPORT_OK = "storeSpecies";
 
-if (-e "species.sps") { #print "\nFile species.sps exists.\n";  
-	unlink ("species.sps"); 
-	#print "\t-- -  File species.sps deleted.\n";
-	} 
 
 sub storeSpecies {
 my ($path,$fileName)=@_;
+
+	my $sps_path = EBALib::CommonSubs::outpath("species.sps");
+	if (-e $sps_path) { #print "\nFile species.sps exists.\n";  
+		unlink ($sps_path); 
+		#print "\t-- -  File species.sps deleted.\n";
+	} 
+
 	my @new_file=split(/_/, $fileName);  ## File is expected to be sepeared by underscore !!
 	if ($new_file[0] ne "")  {
 		my $InFileName="$path/$fileName";
-		my $OutFileName="species.sps";
+		my $OutFileName=EBALib::CommonSubs::outpath("species.sps");
         	storeInfo ( $path, $InFileName,$OutFileName, $new_file[0]); 
 	}	
 }

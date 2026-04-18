@@ -54,7 +54,7 @@ use EBALib::PoissonMethod;
 sub mergeAll {
 
 	my ($dir, $spsNumber, $baseResolution, $lineage)=@_;
-	my $OutFile = "FinalMergedResult";
+	my $OutFile = EBALib::CommonSubs::outpath("FinalMergedResult");
 	open OUTFILE, ">" , $OutFile or die  EBALib::Messages::failOp($OutFile);
 
 	my ($allD_ref, $allR_ref)=storeData($dir);
@@ -65,7 +65,7 @@ sub mergeAll {
 	my @allResD=@$allResolutionData_ref;
 
 	my @allBrk=@$allBrk_ref;  
-	my $OutFile2 = "all_brk.eba0";
+	my $OutFile2 = EBALib::CommonSubs::outpath("all_brk.eba0");
 	open OUTFILE2, ">" , $OutFile2 or die  EBALib::Messages::failOp($OutFile2);
 
 	foreach my $line(@allBrk) { chomp $line; print OUTFILE2 "$line\n"; }  ## Write base resolution all breakpoints in base folder  
@@ -76,7 +76,7 @@ sub mergeAll {
 	my @baseR=@{$allD{$baseResolution}}; ## Store *.eba7 for base resolution.
 	
 
-	my $OutFile3 = "newall_brk1.eba0"; ## This will be new all_brk.eba0 reconstructed from *.eba7
+	my $OutFile3 = EBALib::CommonSubs::outpath("newall_brk1.eba0"); ## This will be new all_brk.eba0 reconstructed from *.eba7
 	open OUTFILE3, ">" , $OutFile3 or die EBALib::Messages::failOp($OutFile3);
 	foreach my $line(@baseR) { 
 		chomp $line; 
@@ -140,30 +140,33 @@ open FILE,  $OutFile3 or die EBALib::Messages::failOp($OutFile3);	## I did some 
 my @array = <FILE>;  # Reads all lines into array
 close FILE;
 
-my $OutFile4 = "newall_brk.eba0";
+my $OutFile4 = EBALib::CommonSubs::outpath("newall_brk.eba0");
 open OUTFILE4, ">" , $OutFile4 or die EBALib::Messages::failOp($OutFile4);
 my @sorted_array = sort {(split "\t", $a)[1] cmp (split "\t", $b)[1] || (split "\t", $a)[2] cmp (split "\t", $b)[2] } @array; ## sort using column 1,2 and 3;  
 foreach my $linewa (@sorted_array) { print OUTFILE4 $linewa;}
 close OUTFILE4 or die EBALib::Messages::failCl("OutFile4");
 
-my $InFile="FinalMergedResult"; ## At root
-my $InFile2="newall_brk.eba0";  ## At root .. changes made .. now I am providing new breakpoint file generated from merge eba7 file.
-my $OutFileFinal="Result_Merge.final";
+my $InFile=EBALib::CommonSubs::outpath("FinalMergedResult"); ## At root
+my $InFile2=EBALib::CommonSubs::outpath("newall_brk.eba0");  ## At root .. changes made .. now I am providing new breakpoint file generated from merge eba7 file.
+my $OutFileFinal=EBALib::CommonSubs::outpath("Result_Merge.final");
 my $resolution=$baseResolution;
 #my $spsNumber=$spsNumber; # The $spsNumber is in the same scope
 #my $lineage=$lineage;  # The $lineage is in the same scope
 
 EBALib::PoissonMethod::poissonScore($InFile, $InFile2, $OutFileFinal, $resolution, $spsNumber, $lineage);
 
-if (-e "FinalMergedResult") { unlink ("FinalMergedResult"); 
+if (-e EBALib::CommonSubs::outpath("FinalMergedResult")) { unlink (EBALib::CommonSubs::outpath("FinalMergedResult")); 
 	#print "\t ----File FinalMergedResult deleted.\n";
 	}  
-if (-e "all_brk.eba0") { unlink ("all_brk.eba0"); 
+if (-e EBALib::CommonSubs::outpath("all_brk.eba0")) { unlink (EBALib::CommonSubs::outpath("all_brk.eba0")); 
 	#print "\t ----File all_brk.eba0 deleted.\n";
 	}  
-if (-e "newall_brk.eba0") { unlink ("newall_brk.eba0"); 
+if (-e EBALib::CommonSubs::outpath("newall_brk.eba0")) { unlink (EBALib::CommonSubs::outpath("newall_brk.eba0")); 
 	#print "\t ----File newall_brk.eba0 deleted.\n";
 	}  
+if (-e EBALib::CommonSubs::outpath("newall_brk1.eba0")) { unlink (EBALib::CommonSubs::outpath("newall_brk1.eba0")); 
+	#print "\t ----File newall_brk1.eba0 deleted.\n";
+	} 
 
 
 } #The main subrouitine MergeAll ends here
@@ -287,7 +290,7 @@ while (my $sub_folders = readdir($par_dir)) {
 						
 					my @res = split(/\//, $InFile); #print $res[2];
 					
-					if(EBALib::CommonSubs::isInteger($res[2])) { $allData{$res[2]}=[@data]; push (@allResolutions, $res[2]); } else { EBALib::Messages::numericFold("number");}
+					if(EBALib::CommonSubs::isInteger($res[-3])) { $allData{$res[-3]}=[@data]; push (@allResolutions, $res[-3]); } else { EBALib::Messages::numericFold("number");}
 
 									
 				}

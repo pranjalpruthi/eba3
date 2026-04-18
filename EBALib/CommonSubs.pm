@@ -41,6 +41,29 @@ The rest of the documentation details each of the object methods.
 
 package EBALib::CommonSubs;
 use warnings::register;
+use File::Path qw(mkpath);
+
+## Global configuration hash — set by EBA.pl from CLI flags, read by all modules
+our %CONFIG = (
+    outdir    => '.',              # Output directory (default: CWD)
+    chrfile   => 'chr_size.txt',   # Chromosome sizes file path
+    classfile => 'classification.eba', # Classification file path
+);
+
+## Helper: prepend outdir to a filename
+sub outpath {
+    my $file = shift;
+    return "$CONFIG{outdir}/$file";
+}
+
+## Initialize output directory — create if it doesn't exist
+sub init_outdir {
+    my $dir = $CONFIG{outdir};
+    if ($dir ne '.' && !-d $dir) {
+        mkpath($dir) or die "ERROR: Cannot create output directory '$dir': $!\n";
+        print "Created output directory: $dir\n";
+    }
+}
 
 # Checks if a provided two coordinates overlaps or not
 sub checkCorOverlaps {

@@ -61,9 +61,9 @@ use warnings;
 my ($dir, $num)=@_;
 my ($InPutFile, $OutPutFile, $OutPutFile2);
 
-$InPutFile="allCumData.tmp";
-$OutPutFile="Unique_reuse_EBRs_all_resolutions.gif";
-$OutPutFile2="Unique_reuse_EBRs_all_resolutions.data";
+$InPutFile=EBALib::CommonSubs::outpath("allCumData.tmp");
+$OutPutFile=EBALib::CommonSubs::outpath("Unique_reuse_EBRs_all_resolutions.gif");
+$OutPutFile2=EBALib::CommonSubs::outpath("Unique_reuse_EBRs_all_resolutions.data");
 
 ##-------------------------------------------------------------
 

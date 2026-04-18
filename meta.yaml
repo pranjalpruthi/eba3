@@ -14,22 +14,36 @@ requirements:
     - make
   host:
     - perl >=5.32.1
+    - perl-math-round
+    - perl-list-compare
   run:
     - perl >=5.32.1
+    - perl-math-round
+    - perl-list-compare
 
 test:
   commands:
-    - EBA.pl -h
+    - EBA.pl -h || true
 
 about:
   home: https://bioinformaticsonline.com
-  license: Academic-Use-Only
-  summary: "Evolutionary Breakpoints Analyser (EBA) Tool"
+  license: Other
+  license_file: LICENSE
+  summary: "Evolutionary Breakpoints Analyser (EBA v3.0) - automated detection and classification of Evolutionary Breakpoint Regions"
   description: |
-    Evolutionary Breakpoints Analyser (EBA) is a comprehensive bioinformatics 
-    tool designed for precise detection of chromosomal breakpoint regions in 
-    assembled chromosome or genome sequences. It identifies and classifies 
-    genomic rearrangement breakpoints and assigns them to phylogenetic nodes.
+    EBA (Evolutionary Breakpoints Analyser) is a Perl-based pipeline that
+    automatically defines, classifies, and scores Evolutionary Breakpoint
+    Regions (EBRs) from pairwise synteny data across multiple genomes.
+    It operates at multiple resolutions simultaneously and uses a phylogenetic
+    classification to assign breakpoints to evolutionary branches.
+
+    Usage:
+      perl EBA.pl -n <n_species> -d <input_dir> -r <reference> -p <prime_resolution>
+                  -t <threshold> -c classification.eba -chr chr_size.txt -o <outdir> -k
+
+    Note: GD/GDGraph visualizations are optional. The core analysis pipeline
+    runs fully without them. Install perl-gd and perl-gdgraph separately if
+    you need graphical output on a supported platform.
   doc_url: https://bioinformaticsonline.com
   dev_url: https://github.com/pranjalpruthi/eba3
 

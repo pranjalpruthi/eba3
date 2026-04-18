@@ -66,7 +66,7 @@ $|++; ## flush Perl print buffer
 my (%names, %nodes, @array2d, %finalHash,@species, @allclass);
 
 open SPSFILE, "sps.txt" or die $!;
-open OUTFILE, ">", "classification.eba" or die $!;
+open OUTFILE, ">", $EBALib::CommonSubs::CONFIG{classfile} or die $!;
 while (<SPSFILE>) { chomp $_; @species=split /,/, lc($_); } 
 close SPSFILE; ## It read the species names from sps.txt file ... need to improve !!!
 unshift (@species, "$reference");

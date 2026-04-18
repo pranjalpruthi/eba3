@@ -55,12 +55,12 @@ our @EXPORT_OK = "drawBetaGraph";
 
 sub drawBetaGraph { # for line graph
 
-my ($finalData_ref, $catColor_ref,$allSps_ref, $max)=readData('betaScore');
+my ($finalData_ref, $catColor_ref,$allSps_ref, $max)=readData(EBALib::CommonSubs::outpath('betaScore'));
 my @finalData=@$finalData_ref;
 my @catColor=@$catColor_ref;
 my @allSps=@$allSps_ref;
 my $y_axis_max = $max;
-my $file2='betaScore.data';
+my $file2=EBALib::CommonSubs::outpath('betaScore.data');
 #create graph object for canvas 800 by 600 pixels
 
 q^
@@ -108,7 +108,7 @@ print2d (\@finalData, $file2);
 #write graph to a file
 
 q^
-my $line_file = "betaScore.gif";
+my $line_file = EBALib::CommonSubs::outpath("betaScore.gif");
 
 open(IMG, ">$line_file") || die die ("\nFailed to save graph to file: $line_file. $!");;
 print IMG $plot->gif();

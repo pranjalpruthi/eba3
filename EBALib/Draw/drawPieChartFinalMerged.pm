@@ -60,9 +60,9 @@ use warnings;
 my ($resName1) = @_;
 
 my $resName="Merge";
-my $InPutFile="Result_Merge2.final";
-my $OutPutFile= "Pie_chart_classified_EBRs.gif";
-my $OutPutFile2= "Pie_chart_classified_EBRs.data";
+my $InPutFile=EBALib::CommonSubs::outpath("Result_Merge2.final");
+my $OutPutFile= EBALib::CommonSubs::outpath("Pie_chart_classified_EBRs.gif");
+my $OutPutFile2= EBALib::CommonSubs::outpath("Pie_chart_classified_EBRs.data");
 my $spsNum=$resName1;   
 
 my ($finalData_ref, $catColor_ref, $allSps_ref)=readData($InPutFile, $OutPutFile2, $spsNum);

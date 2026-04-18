@@ -55,7 +55,7 @@ sub breakpointGraph {
 my ($fileName, $spsArray_ref, $allResolutions_ref, $num)=@_;
 my @spsArr=@$spsArray_ref;
 my @allRes=@$allResolutions_ref;
-my $file2="No_unclassified_EBRs_per_resolution.data";
+my $file2=EBALib::CommonSubs::outpath("No_unclassified_EBRs_per_resolution.data");
 
 #print $fileName;
 #print @spsArr;
@@ -162,7 +162,7 @@ $my_graph->set_y_axis_font(['verdana', 'arial', gdMediumBoldFont],12);
 $my_graph->set_legend_font(['verdana', 'arial', gdMediumBoldFont],12); 
 my $plot = $my_graph->plot(\@finalData);
 #write graph to a file
-my $line_file = "No_unclassified_EBRs_per_resolution.gif";
+my $line_file = EBALib::CommonSubs::outpath("No_unclassified_EBRs_per_resolution.gif");
 
 open(IMG, ">$line_file") || die ("\nFailed to save graph to file: $line_file. $!");;
 print IMG $plot->gif();

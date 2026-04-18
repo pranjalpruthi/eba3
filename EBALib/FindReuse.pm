@@ -84,7 +84,7 @@ open OUTFILE, ">" , $OutFile or die EBALib::Messages::failOp($OutFile);
 #print "$InFile\t$OutFile\t$spsNum\t$cutoff\n";
 
 my %allClassificationHash; my @allSpeciesName;
-open INCLASSFILE, 'classification.eba' or die EBALib::Messages::failOp("classification.eba");
+open INCLASSFILE, $EBALib::CommonSubs::CONFIG{classfile} or die EBALib::Messages::failOp("classification.eba");
 while (<INCLASSFILE>) { chomp;  my $line= lc($_); $line=EBALib::CommonSubs::trim($line); #print "$line\n"; 
 if (index($line,"#") == 0) { next; } # Lines starting with a hash mark are comments
 if ($line =~ /^\s*$/) { next; }

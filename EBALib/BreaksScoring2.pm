@@ -86,7 +86,7 @@ open OUTFILE, ">" , $OutFile or die EBALib::Messages::failOp($OutFile);
 $/ = "\n";
 $i=0;
 
-open SPSFILE, "sps.txt" or die $!;
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 while (<SPSFILE>) { $l=EBALib::CommonSubs::trim($_); chomp $l; @t=split /,/, lc($l); $t_len = scalar (@t); }
 $ts=join("\t", @t); 
 close SPSFILE or die EBALib::Messages::failCl("sps.txt");

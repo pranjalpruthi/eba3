@@ -2,7 +2,7 @@
 use 5.010;
 use strict;
 use warnings;
-use Term::Prompt;
+# use Term::Prompt;
 
 ## This program is to check the existing modules in your system. You can add more module in @modules array 
 
@@ -16,7 +16,7 @@ my @modules = qw(
 	File::Path
 	Math::Round
 	DateTime::Locale
-	Term::Prompt
+
 	Term::ANSIColor
 	List::Compare
     	List::Compare::Base::_Engine
@@ -26,7 +26,7 @@ my @modules = qw(
 print "Checking mandatory modules for EBA\n";
 checkModules(@modules); ## Provide the name of all modules
 	
-until ( do $script ) {
+until ( do "./$script" ) {
     my $expire = $@;
     if ( my ($file) = $expire =~ /^Can't locate (.+?) in/ ) {
         my $module = $file;
@@ -34,7 +34,9 @@ until ( do $script ) {
         $module = join('::', split '/', $module);
         print "Attempting to install '$module' via cpan\n";
         system(cpan => $module);
-        last unless prompt(y => 'Try Again?', '', 'n');
+        print "Try Again? [y/N]: ";
+        chomp(my $ans = <STDIN>);
+        last unless lc($ans) eq 'y';
     }
     else {
         die $expire;

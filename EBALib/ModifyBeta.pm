@@ -98,7 +98,7 @@ sub calculateMaxBetaScore {
 	my @allData=@$allData_ref;
 
 	my @SpsArray; my @lastRes;
-	open SPSFILE, "sps.txt" or die $!;
+	open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 	while (<SPSFILE>) { my $SpsLine=$_; chomp $SpsLine; @SpsArray=split /,/, lc($SpsLine);  my $SpsNumber = scalar (@SpsArray); }
 	close SPSFILE or die EBALib::Messages::failCl("sps.txt");
 

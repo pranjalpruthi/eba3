@@ -77,7 +77,7 @@ my ($InFile, $InFile2, $OutFile)=@_;
 open INFILE,  $InFile or die EBALib::Messages::failOp($InFile);
 open OUTFILE, ">" , $OutFile or die EBALib::Messages::failOp($OutFile);
 
-open SPSFILE, "sps.txt" or die $!;
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 my @SpsArray;
 while (<SPSFILE>) { my $SpsLine=$_; chomp $SpsLine; @SpsArray=split /,/, lc($SpsLine);  my $SpsNumber = scalar (@SpsArray); } ## It read the spacies names from sps.txt file ... need to improve !!!
 my $SpsArrayTabed=join("\t", @SpsArray); 

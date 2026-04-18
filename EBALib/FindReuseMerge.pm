@@ -57,8 +57,8 @@ sub generateReuseMerge {
 
 my ($spsNum, $cutoff, $engrave )=@_;
 
-my $InFile="Result_Merge.final";
-my $OutFile="Result_Reuse_Merge.final";
+my $InFile=EBALib::CommonSubs::outpath("Result_Merge.final");
+my $OutFile=EBALib::CommonSubs::outpath("Result_Reuse_Merge.final");
 
 open INFILE,  $InFile or die "$0: open $InFile: $!";
 open OUTFILE, ">" , $OutFile or die "$0: open $OutFile: $!";
@@ -66,7 +66,7 @@ open OUTFILE, ">" , $OutFile or die "$0: open $OutFile: $!";
 #print "$InFile\t$OutFile\t$spsNum\t$cutoff\n";
 
 my %allClassificationHash; my @allSpeciesName;
-open INCLASSFILE, 'classification.eba' or die EBALib::Messages::failOp("classification.eba");
+open INCLASSFILE, $EBALib::CommonSubs::CONFIG{classfile} or die EBALib::Messages::failOp("classification.eba");
 while (<INCLASSFILE>) { chomp;  my $line= lc($_); $line=EBALib::CommonSubs::trim($line);#print "$line\n"; 
 if (index($line,"#") == 0) { next; } # Lines starting with a hash mark are comments
 if ($line =~ /^\s*$/) { next; }
@@ -143,8 +143,8 @@ close OUTFILE or die EBALib::Messages::failCl("$OutFile");
 
 ## Generate a result files in ResultFiles folder
 #move("betaScore.data","/birds_subset/betaScore.data"), "could not $InFile file: $!\n";
-generateFinal("Result_Merge.final", "Result_Merge2.final", 1, $spsNum); 
-generateFinal2("Result_Merge.final", "Result_Merge3.final", 1, $spsNum, $engrave); 
+generateFinal(EBALib::CommonSubs::outpath("Result_Merge.final"), EBALib::CommonSubs::outpath("Result_Merge2.final"), 1, $spsNum); 
+generateFinal2(EBALib::CommonSubs::outpath("Result_Merge.final"), EBALib::CommonSubs::outpath("Result_Merge3.final"), 1, $spsNum, $engrave);
 #generateFinal("$path/EBA_OutFiles/final_classify_reuse.eba8", "$path/ResultFiles/ResultReuse.final", 2, $spsNum);
 
 
@@ -352,7 +352,7 @@ sub generateFinal {
     }
     close FILE1;
     close FILE2;
-#unlink('Result_Merge.final');
+#unlink(EBALib::CommonSubs::outpath('Result_Merge.final'));
     #return @lines;
 }
 
@@ -405,7 +405,7 @@ sub generateFinal2 {
     }
     close FILE1;
     close FILE2;
-#unlink('Result_Merge.final');
+#unlink(EBALib::CommonSubs::outpath('Result_Merge.final'));
 #return @lines;
 }
 

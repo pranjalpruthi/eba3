@@ -13,7 +13,7 @@ EBA is a **Perl-based bioinformatics pipeline** that automatically defines, clas
 ## Command Breakdown
 
 ```bash
-perl EBA.pl -n 5 -d EBA-input/ -r Adineta_vaga -p 300 -t 20 -c classification.eba -k -o ./EBA_results -chr chr_size.txt
+perl EBA.pl -n 5 -d EBA-input/ -r Adineta_vaga -p 300 -t 20 -c classification.eba -k
 ```
 
 | Flag | Value | Meaning |
@@ -25,8 +25,6 @@ perl EBA.pl -n 5 -d EBA-input/ -r Adineta_vaga -p 300 -t 20 -c classification.eb
 | `-t 20` | 20 | Threshold for filtering reuse breakpoints |
 | `-c classification.eba` | `classification.eba` | Custom phylogenetic classification file (skips NCBI auto-classification) |
 | `-k` | flag | **Keep** intermediate files (don't delete them after the run) |
-| `-o ./EBA_results` | `./EBA_results` | Custom output directory to save all final `.data`, `.gif` charts, and score files. |
-| `-chr chr_size.txt` | `chr_size.txt` | Custom chromosome size file for boundary calculations |
 
 ---
 

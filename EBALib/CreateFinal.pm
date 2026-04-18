@@ -80,13 +80,13 @@ open OUTFILE, ">" , $OutFile or die EBALib::Messages::failOp($OutFile);
 $|++;
 $/ = "\n";
 
-open SPSFILE, "sps.txt" or die $!;
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 while (<SPSFILE>) { $l=$_; chomp $l; @t=split /,/, lc($l); $t_len = scalar (@t); }
 $ts=join("\t", @t); 
 close SPSFILE or die EBALib::Messages::failCl("sps.txt");
 
 my %HashSpeciesName;
-open SPSNAME, "species.sps" or die $!;
+open SPSNAME, EBALib::CommonSubs::outpath("species.sps") or die $!;
 while (<SPSNAME>) { my $lineName=$_; chomp $lineName; my @tmpName=split /\t/, lc($lineName); $HashSpeciesName{$tmpName[0]}=$tmpName[1]; }
 close SPSNAME or die EBALib::Messages::failCl("species.sps");
 

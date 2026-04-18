@@ -60,9 +60,9 @@ use warnings;
 
 my ($InPutFile, $OutPutFile, $OutPutFile2);
 
-$InPutFile="Result_Reuse_Merge.final";
-$OutPutFile="Number_unique_reuse_EBRs.gif";
-$OutPutFile2="Number_unique_reuse_EBRs.data";
+$InPutFile=EBALib::CommonSubs::outpath("Result_Reuse_Merge.final");
+$OutPutFile=EBALib::CommonSubs::outpath("Number_unique_reuse_EBRs.gif");
+$OutPutFile2=EBALib::CommonSubs::outpath("Number_unique_reuse_EBRs.data");
 
 my ($finalData_ref, $catColor_ref, $allSps_ref)=readData($InPutFile, $OutPutFile2, "Merge");
 my @finalData=@$finalData_ref;

@@ -95,7 +95,7 @@ my @InputSpeciesNames=@_;
 #use strict;
 #use warnings;
 
-@t_name=split /\//, $InputSpeciesNames[0]; @t_name=split /\./, $t_name[4];
+@t_name=split /\//, $InputSpeciesNames[0]; @t_name=split /\./, $t_name[-1];
 my $file = "$InputSpeciesNames[-1]/EBA_OutFiles/table_"."$t_name[0]"."_scored.eba5";
 
 #my $file = "table_table_$ARGV[0].txt";
@@ -108,7 +108,7 @@ foreach $argnum (0 .. $#InputSpeciesNames-1) {
 
 $/ = "\n";
 
-open SPSFILE, "sps.txt" or die $!;
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;
 while (<SPSFILE>) { $l=$_; chomp $l; @t=split /,/, lc($l); $t_len = scalar (@t); }
 $ts=join("\t", @t); 
 close SPSFILE or die EBALib::Messages::failCl("sps.txt");

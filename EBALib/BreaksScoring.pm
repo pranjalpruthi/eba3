@@ -91,7 +91,7 @@ sub calculateScores {
 my ($InPutFiles_ref, $path)=@_;
 my @InPutFiles=@$InPutFiles_ref;
 my @resName=split /\//, $path;
-my @t_name=split /\//, $InPutFiles[0]; @t_name=split /\./, $t_name[4];
+my @t_name=split /\//, $InPutFiles[0]; @t_name=split /\./, $t_name[-1];
 my $file = "$InPutFiles[-1]/EBA_OutFiles/table_"."$t_name[0]".".eba3";
 my $tmp = "$InPutFiles[-1]/EBA_OutFiles/table.tmp" . $$; # habitually I make tmp files unique in case of multiuser usage.
 
@@ -103,7 +103,7 @@ open INFILE, "$InPutFiles[$argnum]" or die EBALib::Messages::failOp($InPutFiles[
 $|++;
 $/="\n";
 
-open SPSFILE, "sps.txt" or die $!;  ## It contain species names 
+open SPSFILE, EBALib::CommonSubs::outpath("sps.txt") or die $!;  ## It contain species names
 while (<SPSFILE>) {  $l= EBALib::CommonSubs::trim($_); chomp $l;  @t=split /,/, lc($l);  $t_len = scalar (@t); }
 my $ts=join("\t", @t); 
 close SPSFILE;
@@ -125,7 +125,7 @@ while (<INFILE>) {
 	$spsName=$tmp[0];
 	}
 if ($argnum == 0) { #To check the data once for gaps and breaks
-	my $output_file="gaps_brks.stats";
+	my $output_file=EBALib::CommonSubs::outpath("gaps_brks.stats");
 	my $pura=$breaks+$gaps+$other;
 	open FH, ">>$output_file" or die EBALib::Messages::failOp($output_file);
 	my $finalGap=$gaps-$telomere;

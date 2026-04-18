@@ -55,7 +55,7 @@ my $file2="drawChrBreakpointGraph.data";
 my (@allBreaks, $countBreakNumber, @finalData, @all, @catColor);
 
 my %hash;
-open(CHRFILE, "chr_size.txt") || warn "Can't open chromosome file\n";
+open(CHRFILE, $EBALib::CommonSubs::CONFIG{chrfile}) || warn "Can't open chromosome file\n";
 while (<CHRFILE>) { chomp; my ($key, $val) = split /\t/, lc($_); $hash{$key} = $val;} ### We can read and store it ... !!!!
 close CHRFILE or die "could not close file: $!\n";
 foreach my $key ( sort {$a <=> $b} keys %hash){ push (@arrayChr, $key); } ## Store the chromosome data

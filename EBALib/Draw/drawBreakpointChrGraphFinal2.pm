@@ -51,9 +51,9 @@ our @EXPORT_OK = "breakpointGraphFinal";
 
 sub breakpointGraphFinal {
 my ($fileName, $resName, $spsNum)=@_;
-my $file2="EBR_density_chromosomes_merged.data";
+my $file2=EBALib::CommonSubs::outpath("EBR_density_chromosomes_merged.data");
 
-my $InFile='sps.txt'; my $InFile2='classification.eba';
+my $InFile=EBALib::CommonSubs::outpath('sps.txt'); my $InFile2=$EBALib::CommonSubs::CONFIG{classfile};
 my (@spsArr);
 
 open INFILE,  $InFile or die "$0: open $InFile: $!";
@@ -78,7 +78,7 @@ close INFILE2 or die "Could not close $InFile2 file: $!\n";
 my (@allBreaks, $countBreakNumber, @finalData, @all, @catColor, @arrayChr, @arrayChr2, @newspsArray, @spsArray2);
 
 my %hash;
-open(CHRFILE, "chr_size.txt") || warn "Can't open chromosome file\n";
+open(CHRFILE, $EBALib::CommonSubs::CONFIG{chrfile}) || warn "Can't open chromosome file\n";
 while (<CHRFILE>) { chomp; my ($key, $val) = split /\t/, lc($_); $hash{$key} = $val;} ### We can read and store it ... !!!!
 close CHRFILE or die "could not close file: $!\n";
 #foreach my $key ( sort {$a <=> $b} keys %hash){ push (@arrayChr, $key); } ## Store the chromosome data
@@ -212,7 +212,7 @@ $my_graph->set_legend_font(['verdana', 'arial', gdMediumBoldFont],12);
 
 my $plot = $my_graph->plot(\@finalData);
 #write graph to a file
-my $line_file = "EBR_density_chromosomes_merge.gif";
+my $line_file = EBALib::CommonSubs::outpath("EBR_density_chromosomes_merge.gif");
 
 open(IMG, ">$line_file") || die ("\nFailed to save graph to file: $line_file. $!");
 print IMG $plot->gif();

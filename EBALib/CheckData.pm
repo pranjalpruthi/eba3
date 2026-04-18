@@ -136,7 +136,7 @@ while (<INFILE>) {
 @chr=  EBALib::CommonSubs::getUniq(@allChr);
 
 my @chrAll;
-open(CHRFILE1, "chr_size.txt") || warn EBALib::Messages::failOp("chr_size");
+open(CHRFILE1, $EBALib::CommonSubs::CONFIG{chrfile}) || warn EBALib::Messages::failOp("chr_size");
 while (<CHRFILE1>) { chomp $_; next if $_ =~ /^$/; next if $_ =~ /^\s*#/; my @chrtmp = split /\t/, lc($_); push @chrAll,$chrtmp[0];}       ## We need to improve it !!!!!!!!!1
 close CHRFILE1 or die EBALib::Messages::failCl("file");
 for (@chrAll) { s/^\s+//; s/\s+$//;} # replace spaces

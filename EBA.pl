@@ -28,7 +28,7 @@ use strict;
 use warnings;
 
 use FindBin;
-use lib "$FindBin::Bin";
+use lib "$FindBin::RealBin";
 use English;
 use FileHandle;
 use Getopt::Long;
@@ -134,6 +134,8 @@ my (
 	$logfile,
 	$keep,
 	$engrave,
+	$chrfile,
+	$resultdir,
 );
 
 # Default option setting for EBA tool
@@ -145,7 +147,7 @@ GetOptions(
 	\%options,
     	'number|n=i'    => \$number,        	## Number of species on are working with
     	'dir|d=s' 	=> \$dir,           	## In directory name
-	'outdir|o=s' 	=> \$outdir,           	## Out Directory name
+	'outdir|o=s' 	=> \$resultdir,        	## Output directory for all results
     	'beta|b=s' 	=> \$beta,          	## Beta Calculation "yes" or "no"
     	'force|f' 	=> \$force,         	## if "yes" work on unlimited species and resolutions
     	'classify|c=s' 	=> \$classify,  	## "yes" or "no" ## classify the species or not
@@ -160,6 +162,7 @@ GetOptions(
 	'engrave|e' 	=> \$engrave,		## print the breaks detail of all studied species.
 	'scrutiny|s' 	=> \$scrutiny,		## scrutiny the classification file
     	'reference|r=s' => \$reference, 	## Name of your reference species 
+	'chrfile|chr=s' => \$chrfile,		## Path to chromosome sizes file
     	'help|?|h!'     => sub { EBALib::Messages::EBAWelcome($VERSION) },
    	'who|w!'     	=> sub { EBALib::Messages::EBAWho($VERSION) },
 	'verbose' 	=> \$verbose,
@@ -170,9 +173,25 @@ GetOptions(
 ## make sure everything passed was peachy
 #EBALib::Messages::checkParameters(\%options);
 
+## Set global configuration from CLI flags
+if ($resultdir) {
+	$EBALib::CommonSubs::CONFIG{outdir} = $resultdir;
+}
+if ($chrfile) {
+	$EBALib::CommonSubs::CONFIG{chrfile} = $chrfile;
+}
+if ($classify) {
+	$EBALib::CommonSubs::CONFIG{classfile} = $classify;
+}
+
+## Initialize the output directory
+EBALib::CommonSubs::init_outdir();
+my $outpath = $EBALib::CommonSubs::CONFIG{outdir};
+
 #Store in current dir
 if (!$outdir) { $outdir = "EBA_OUT";}
-EBALib::CommonSubs::dircopy($dir,$outdir);
+my $outdir_full = ($outpath eq '.') ? $outdir : "$outpath/$outdir";
+EBALib::CommonSubs::dircopy($dir,$outdir_full);
 
 #Check the taxdump folder, and if not there download it
 #use LWP::Simple;
@@ -186,6 +205,7 @@ EBALib::CommonSubs::dircopy($dir,$outdir);
 #my $ok = $ae->extract or die $ae->error;
 
 if ((!$number) or (!$dir) or (!$reference) or (!$prime) or (!$threshold)) { EBALib::Messages::printUsage(); }
+if ((!$chrfile) and (!-e 'chr_size.txt')) { print "WARNING: No chr_size.txt found in current directory. Use -chr <path> to specify.\n"; }
 
 # If the beta score is not calculated then user need to provide their own beta score in an acceptable format.
 if ($beta) { 
@@ -221,12 +241,12 @@ else {
 	
 	if(($number and $dir and $reference and $prime and $threshold) eq "") { print "ERROR : Wrong Usage "; EBALib::Messages::printUsage();}
 	## Delete merge folder if exist
-	rmtree(["$outdir/Merge"]); 
+	rmtree(["$outdir_full/Merge"]); 
 	
 	## Read the resolutions folders, files and validate it for the EBA.
-	if (!$validate) { EBALib::CheckData::verifyData($outdir, $number); } else { $validate=1;}
+	if (!$validate) { EBALib::CheckData::verifyData($outdir_full, $number); } else { $validate=1;}
 
-	my $parent = "./$outdir";  #The main folder which contains all the resolution folders
+	my $parent = "./$outdir_full";  #The main folder which contains all the resolution folders
 
 	my ($par_dir, $sub_dir);
 
@@ -253,11 +273,11 @@ else {
 		
 		if (!$scrutiny) { 
 			EBALib::Messages::ParseClass();
-			EBALib::CheckClassification::verifyClassification('classification.eba', $reference); $scrutiny=1;}
+			EBALib::CheckClassification::verifyClassification($EBALib::CommonSubs::CONFIG{classfile}, $reference); $scrutiny=1;}
 		
 		if ($exclude) { 
 			EBALib::Messages::ExludeClass();
-			EBALib::ModifyClassification::alterClassification('classification.eba'); $exclude=0;}
+			EBALib::ModifyClassification::alterClassification($EBALib::CommonSubs::CONFIG{classfile}); $exclude=0;}
 
 		EBALib::BreaksAmongstSpecies::breakpointsAmongstSpecies($path);
 		EBALib::BreaksMatrix::breakpointsTable($path);
@@ -271,11 +291,11 @@ else {
 		
 		if (!$beta) { 
 			EBALib::Messages::CalBS();
-			EBALib::CalculateBeta::betaCal($outdir, $increase, $number, $resName);
+			EBALib::CalculateBeta::betaCal($outdir_full, $increase, $number, $resName);
 
 			use strict;
 			use File::Find;
-			find(\&dir_names, "$outdir");
+			find(\&dir_names, "$outdir_full");
 			my (@allDIR, @finalDIR);
 			sub dir_names {
  				@allDIR="$File::Find::dir" if(-f $File::Find::dir,'/');
@@ -293,7 +313,7 @@ else {
 			#foreach (@finalDIR_sorted) { print "$_\n";}
 			my $resName=EBALib::CommonSubs::isInList($prime, @finalDIR_sorted);
 			if ($resName == 0) { EBALib::Messages::ResRange($prime)}
-			EBALib::ModifyBeta::alterBeta("betaScore", $number, $finalDIR_sorted[-1]);
+			EBALib::ModifyBeta::alterBeta(EBALib::CommonSubs::outpath("betaScore"), $number, $finalDIR_sorted[-1]);
 			$beta=1; 
 		}
 		EBALib::PoissonMethod::generateFinalPoisson($path, $number, $lineage); ## Read number of species from command line 
@@ -315,31 +335,31 @@ else {
 # Merge stuff here
 if (!$merge) {
    my $curDir = getcwd;
-   EBALib::Messages::MergeMSG($curDir, $outdir);
-   EBALib::MergeResolution::mergeAll($outdir, $number, $prime, $lineage); ## Merging all the resolutions
+   EBALib::Messages::MergeMSG($curDir, $outdir_full);
+   EBALib::MergeResolution::mergeAll($outdir_full, $number, $prime, $lineage); ## Merging all the resolutions
    EBALib::FindReuseMerge::generateReuseMerge($number, $threshold, $engrave); ## Calculate the merged resolutions
    EBALib::Draw::drawCumulatedStackedBarMerged::drawStackBarMerged($number); # Merged
    EBALib::Draw::drawPieChartFinalMerged::drawPieChartMerge($number);
    EBALib::Draw::drawPieChartBreaksFinalMerged::drawBreaksPieMerged($number);
    
-   EBALib::Draw::drawBreakpointChrGraphFinal::breakpointGraphFinal("Result_Reuse_Merge.final", "Merge", $number); ## To generate a line graph for merged final file
-   EBALib::Draw::drawBreakpointChrGraphFinal2::breakpointGraphFinal("Result_Reuse_Merge.final", "Merge", $number); ## To generate a line graph for merged final file
-	unlink('Result_Merge2.final');
+   EBALib::Draw::drawBreakpointChrGraphFinal::breakpointGraphFinal(EBALib::CommonSubs::outpath("Result_Reuse_Merge.final"), "Merge", $number); ## To generate a line graph for merged final file
+   EBALib::Draw::drawBreakpointChrGraphFinal2::breakpointGraphFinal(EBALib::CommonSubs::outpath("Result_Reuse_Merge.final"), "Merge", $number); ## To generate a line graph for merged final file
+	unlink(EBALib::CommonSubs::outpath('Result_Merge2.final'));
    $merge=1;
    }
 
 # Make Merge and move all data.
-mkdir ("$outdir/Merge", 0777) or print "$!\n";
-moveAll("$outdir/Merge/", 'data'); 	##To move all *.data files
-EBALib::Draw::drawCumulatedStackedBarAll::drawStackBarMergedAll($outdir, $number); ## It does not require to the same address.
+mkdir ("$outdir_full/Merge", 0777) or print "$!\n";
+moveAll("$outdir_full/Merge/", 'data'); 	##To move all *.data files
+EBALib::Draw::drawCumulatedStackedBarAll::drawStackBarMergedAll($outdir_full, $number); ## It does not require to the same address.
 my $curDir = getcwd;
-deleteColumn ("$curDir/Result_Merge3.final", "$curDir/final_classify.final", $number);
-moveAll("$outdir/Merge/", 'gif'); 		##To move all *.gif files
-moveAll("$outdir/Merge/", 'final'); 	##To move all *.gif files
-#print "The merged results and graph datasets are moved to $curDir/$outdir/Merge folder\n";
-unlink glob "*.data"; unlink glob "*.tmp"; unlink glob "*.eba0";
+deleteColumn (EBALib::CommonSubs::outpath("Result_Merge3.final"), EBALib::CommonSubs::outpath("final_classify.final"), $number);
+moveAll("$outdir_full/Merge/", 'gif'); 		##To move all *.gif files
+moveAll("$outdir_full/Merge/", 'final'); 	##To move all *.final files
+#print "The merged results and graph datasets are moved to $curDir/$outdir_full/Merge folder\n";
+unlink glob EBALib::CommonSubs::outpath("*.data"); unlink glob EBALib::CommonSubs::outpath("*.tmp"); unlink glob EBALib::CommonSubs::outpath("*.eba0");
 ## To clean up at the end of the program.
-if (!$keep) { EBALib::Messages::cleanIn(); EBALib::Safai::cleanUp($outdir);} 
+if (!$keep) { EBALib::Messages::cleanIn(); EBALib::Safai::cleanUp($outdir_full);} 
 
 }
 
@@ -371,7 +391,7 @@ if(!$increase) { $increase=0;} ## the default increament for the breakpoint size
 	
 		$refName=storeRef($path, $file);
 		my @res = split(/\//, $full_path);
-		push (@allRes, $res[2]);
+		push (@allRes, $res[-2]);
 		EBALib::BreaksFinder::defineBreakpoints($path,$file,$increase);	 # The function is in Perl package BreaksFinder;
 		EBALib::StoreSpecies::storeSpecies($path, $file);
 	}
@@ -396,7 +416,8 @@ return $refName[0];
 sub moveAll {
 my ($copytopath, $ext)=@_;
 $ENV{'Merge'}="$copytopath";
-my @files = glob("*.$ext"); ## We can add path if required glob("$PATH1/*.data");
+my $outdir = $EBALib::CommonSubs::CONFIG{outdir} || '.';
+my @files = glob("$outdir/*.$ext"); ## We can add path if required glob("$PATH1/*.data");
 	for my $file (@files) {
     	copy("$file", $ENV{'Merge'}) or die EBALib::Messages::fail(); ## We can add the path here as well
 	unlink ($file);
@@ -436,7 +457,7 @@ EBA.pl	- Script to automated definition and classification of evolutionary break
 
 =head1 SYNOPSIS
 
-perl EBA.pl -n <number> -d <dir> -r <refname> -p <prime> -t <number> 
+perl EBA.pl -n <number> -d <dir> -r <refname> -p <prime> -t <number> -c <classfile> -chr <chrfile> [-o <outdir>] [-k]
 
 Mandatory parameters:
 
@@ -449,6 +470,16 @@ Mandatory parameters:
   -p <prime> 	Provide the primary resolution name [ the resolution name should be numeric ].
 
   -t <number> 	The threshold value for reuse breakpoint filtration. 
+
+  -c <classfile> 	Path to the classification file (e.g., classification.eba).
+
+  -chr <chrfile> 	Path to the chromosome sizes file (e.g., chr_size.txt).
+
+Optional parameters:
+
+  -o <outdir> 	Output directory for all result files. Default: current directory.
+
+  -k 		Keep intermediate files (do not delete after run).
 
 Try -h for more detail.
 
