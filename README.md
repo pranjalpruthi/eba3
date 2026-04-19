@@ -1,5 +1,10 @@
 # EBA v3.0 — Evolutionary Breakpoints Analyser
 
+[![Made in India](https://img.shields.io/badge/Made%20in-India-orange?style=flat-square)](https://india.gov.in/)
+[![Conda Version](https://img.shields.io/anaconda/v/jitendralab/eba3?style=flat-square&logo=anaconda)](https://anaconda.org/jitendralab/eba3)
+[![Conda Downloads](https://img.shields.io/anaconda/dn/jitendralab/eba3?style=flat-square&logo=anaconda)](https://anaconda.org/jitendralab/eba3)
+[![License](https://img.shields.io/badge/License-Academic--Use--Only-blue?style=flat-square)](LICENSE)
+
 ## What It Is
 
 EBA is a **Perl-based bioinformatics pipeline** that automatically defines, classifies, and scores **Evolutionary Breakpoint Regions (EBRs)** from pairwise synteny data across multiple genomes. It works at **multiple resolutions** simultaneously and uses a **phylogenetic classification** to determine when breakpoints occurred in evolutionary history.
@@ -10,10 +15,27 @@ EBA is a **Perl-based bioinformatics pipeline** that automatically defines, clas
 
 ---
 
+## Installation via Conda
+
+The easiest way to install EBA v3.0 is via the `jitendralab` Conda channel. This will automatically handle all Perl dependencies.
+
+```bash
+# Add required channels
+conda config --add channels conda-forge
+conda config --add channels bioconda
+
+# Install EBA v3.0
+conda install -c jitendralab eba3
+```
+
+After installation, the `EBA.pl` command will be available in your PATH.
+
+---
+
 ## Command Breakdown
 
 ```bash
-perl EBA.pl -n 5 -d EBA-input/ -r Adineta_vaga -p 300 -t 20 -c classification.eba -k -o ./EBA_results -chr chr_size.txt
+EBA.pl -n 5 -d EBA-input/ -r Adineta_vaga -p 300 -t 20 -c classification.eba -k -o ./EBA_results -chr chr_size.txt
 ```
 
 | Flag | Value | Meaning |
