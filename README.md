@@ -1,9 +1,9 @@
 # EBA v3.0 — Evolutionary Breakpoints Analyser
 
 [![Made in India](https://img.shields.io/badge/Made%20in-India-FF9933?style=for-the-badge&logo=google-earth&logoColor=white)](https://india.gov.in/)
-[![Anaconda Version](https://img.shields.io/anaconda/v/jitendralab/eba3?color=24292e&label=anaconda&logo=anaconda&style=for-the-badge)](https://anaconda.org/jitendralab/eba3)
-[![Downloads](https://img.shields.io/anaconda/dn/jitendralab/eba3?color=24292e&label=downloads&logo=anaconda&style=for-the-badge)](https://anaconda.org/jitendralab/eba3)
-[![License](https://img.shields.io/badge/License-Academic--Use--Only-blue?style=for-the-badge)](LICENSE)
+[![Anaconda](https://img.shields.io/badge/conda-jitendralab%2Feba3-44A833?style=for-the-badge&logo=anaconda&logoColor=white)](https://anaconda.org/jitendralab/eba3)
+[![Version](https://img.shields.io/badge/version-3.0.0-blue?style=for-the-badge)](https://anaconda.org/jitendralab/eba3)
+[![License](https://img.shields.io/badge/License-Academic--Use--Only-red?style=for-the-badge)](LICENSE)
 
 ## What It Is
 
